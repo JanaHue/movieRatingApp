@@ -5,14 +5,21 @@ var movieApp = {
 		movieApp.getSessionId();
 
 		//listen for a click on our star ratings
-		$("body").on("change", "input[type=radio]", function(){
+		$("body").on("change", "[name*=rating]", function(){
+
 			var rating = $(this).val();
 			var movieId = $(this).attr('id').split("-")[0].replace("movie","");
 			movieApp.ratingHandler(rating,movieId);
+			console.log("You rated!");
+		});
+		$("input[name=genre]").on("change",function(){
+			genreId = $(this).attr('data-movieId');
+			console.log(genreId);
+			movieApp.grabGenre(genreId);
+			$(".boxOffice").html(movieWrap);
 		});
 
-
-	}, // end init function
+	}, // end init function 
 
 
 	//This function will go to the movie db API and get all the config data that we require. 
@@ -27,26 +34,39 @@ var movieApp = {
 			},
 			success : function(config) {
 				movieApp.config = config;
-				movieApp.grabTopRated(); //call the next thing to do
 			} //end second success function
 		}); //end CONFIG ajax request
 	}, // end grabConfig
 
-	grabTopRated : function(){
-		var topRatedURL = "http://api.themoviedb.org/3/movie/top_rated";
-		$.ajax(topRatedURL, {
+	grabGenre : function(genreId){
+		var genreURL = "http://api.themoviedb.org/3/genre/" + genreId + "/movies"
+		$.ajax(genreURL, {
 			type : "GET",
-			dataType : "jsonp",
+			datatype : "jsonp",
 			data : {
-				api_key : movieApp.api_key,
+				api_key : movieApp.api_key
 			},
-			success : function(data) {
-				// console.log(data);
-				//run the displayMovies method to put them on the page:
+			success : function(data){
 				movieApp.displayMovies(data.results);
-			}//end success function
-		}); //end TOP RATED ajax request
-	}, // end grabTopRated
+			}
+		}); //end ajax request for genre grabbing
+	},//end grabGenre
+
+	// grabTopRated : function(){
+	// 	var topRatedURL = "http://api.themoviedb.org/3/movie/top_rated";
+	// 	$.ajax(topRatedURL, {
+	// 		type : "GET",
+	// 		dataType : "jsonp",
+	// 		data : {
+	// 			api_key : movieApp.api_key,
+	// 		},
+	// 		success : function(data) {
+	// 			// console.log(data);
+	// 			//run the displayMovies method to put them on the page:
+	// 			movieApp.displayMovies(data.results);
+	// 		}//end success function
+	// 	}); //end TOP RATED ajax request
+	// }, // end grabTopRated
 
 	displayMovies : function(movies){
 		for (var i = 0; i < movies.length; i++) {
@@ -56,9 +76,9 @@ var movieApp = {
 
 			rating = rating.replace(/star/g, "movie" + movies[i].id + "-star");
 			rating = rating.replace(/rating/g, "rating-" + movies[i].id); 
-			var movieWrap = $("<div>").addClass('movie');
+			movieWrap = $("<div>").addClass('movie');
 			movieWrap.append(title,image,rating);
-			$("body").append(movieWrap);
+			$(".boxOffice").append(movieWrap);
 		};
 	},
 
