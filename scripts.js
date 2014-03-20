@@ -1,29 +1,54 @@
 var movieApp = {
 	api_key : "15b14981e921515511afd98345386c7c",
+	
 	init : function() {
 		movieApp.grabConfig();
 		movieApp.getSessionId();
+		movieApp.grabUserSearch();
 
 		//listen for a click on our star ratings
-		$("body").on("change", "[name*=rating]", function(){
-
+		$("body").on("change", "input[name*=rating]", function(){
 			var rating = $(this).val();
 			var movieId = $(this).attr('id').split("-")[0].replace("movie","");
 			movieApp.ratingHandler(rating,movieId);
 			console.log("You rated!");
 		});
-		$("input[name=genre]").on("change",function(){
-			genreId = $(this).attr('data-movieId');
-			console.log(genreId);
-			movieApp.grabGenre(genreId);
-			$(".boxOffice").html(movieWrap);
+		$("body").on("click", ".movieImg", function(){
+			console.log($(this));
+			var movieId = $(this).data("movieid");
+			movieApp.grabDesc(movieId);
+			$(".overlay").fadeIn();
+		}); // end listen for click on .movie
+
+		$(".overlay, .close").on("click", function(){
+			$(".overlay").fadeOut();
 		});
 
+		$('form.search').on('submit',function(e) {
+			e.preventDefault();
+			var query = $('input[name=search]').val();
+			var q = encodeURI(query);
+			console.log(q);
+			movieApp.grabUserSearch(q);
+		});
 	}, // end init function 
-
 
 	//This function will go to the movie db API and get all the config data that we require. 
 	// When it finishes, it will put the data it gets onto movieApp.config
+	grabDesc : function(movieId){
+		var configURL = "http://api.themoviedb.org/3/movie/" + movieId;
+		$.ajax(configURL, {
+			type : "GET",
+			dataType : "jsonp",
+			data : {
+				api_key : movieApp.api_key
+			},
+			success : function(movie) {
+				$(".overlay .overview p").text(movie.overview);
+			} //end success function
+		}); //end CONFIG ajax request
+	},
+
 	grabConfig : function(){
 		var configURL = "http://api.themoviedb.org/3/configuration";
 		$.ajax(configURL, {
@@ -34,54 +59,45 @@ var movieApp = {
 			},
 			success : function(config) {
 				movieApp.config = config;
-			} //end second success function
+			} //end success function
 		}); //end CONFIG ajax request
 	}, // end grabConfig
 
-	grabGenre : function(genreId){
-		var genreURL = "http://api.themoviedb.org/3/genre/" + genreId + "/movies"
-		$.ajax(genreURL, {
-			type : "GET",
-			datatype : "jsonp",
-			data : {
-				api_key : movieApp.api_key
-			},
-			success : function(data){
-				movieApp.displayMovies(data.results);
-			}
-		}); //end ajax request for genre grabbing
-	},//end grabGenre
+	grabUserSearch : function(q){
+			var searchURL = "http://api.themoviedb.org/3/search/movie";
+			$.ajax(searchURL, {
+				type : "GET",
+				dataType : "jsonp",
+				data : {
+					api_key : movieApp.api_key,
+					query : q
+				},
+				success : function(data) {
+					movieApp.displayMovies(data.results);
+					$(".arrow").fadeIn();
+					}
+			});//end ajax
+	}, // end grabUserSearch
 
-	// grabTopRated : function(){
-	// 	var topRatedURL = "http://api.themoviedb.org/3/movie/top_rated";
-	// 	$.ajax(topRatedURL, {
-	// 		type : "GET",
-	// 		dataType : "jsonp",
-	// 		data : {
-	// 			api_key : movieApp.api_key,
-	// 		},
-	// 		success : function(data) {
-	// 			// console.log(data);
-	// 			//run the displayMovies method to put them on the page:
-	// 			movieApp.displayMovies(data.results);
-	// 		}//end success function
-	// 	}); //end TOP RATED ajax request
-	// }, // end grabTopRated
-
+	//this function displays the movies and star rating form in .boxOffice
 	displayMovies : function(movies){
+		//.empty() will clear .boxOffice before .append adds new information to the div
+		$(".boxOffice").empty();
 		for (var i = 0; i < movies.length; i++) {
 			var title = $("<h2>").text(movies[i].title);
 			var image = $("<img>").attr("src", movieApp.config.images.base_url + "w500" + movies[i].poster_path);
 			var rating = $("fieldset.rateMovie")[0].outerHTML;
-
 			rating = rating.replace(/star/g, "movie" + movies[i].id + "-star");
 			rating = rating.replace(/rating/g, "rating-" + movies[i].id); 
+			movieImg = $("<div>").addClass("movieImg").attr('data-movieid',movies[i].id);
+			movieImg.append(image);
 			movieWrap = $("<div>").addClass('movie');
-			movieWrap.append(title,image,rating);
+			movieWrap.append(movieImg,rating);
 			$(".boxOffice").append(movieWrap);
 		};
 	},
 
+	//this function sends the user's rating back to themoviedb
 	ratingHandler : function(rating,movieId) {
 		$.ajax("http://api.themoviedb.org/3/movie/" + movieId + "/rating",{
 			type : "POST",
@@ -92,7 +108,7 @@ var movieApp = {
 			},
 			success : function(response){
 				if(response.status_code) {
-					alert ("Thanks for the vote!");
+					return;
 				}
 				else {
 					alert (response.status_message);

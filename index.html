@@ -1,42 +1,47 @@
 <!doctype html>
 <html lang="en">
 <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
-	<title>Movie App!</title>
+	<title>Rate your favorite movies</title>
 	<link rel="stylesheet" href="styles.css">
+	<link rel="icon" type="image/png" href="i/movies-icon.png">
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu|Hammersmith+One' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
-	<fieldset class="selectGenre">
-	    <legend>Choose your favorite genre:</legend>
-	    <input type="radio" id="action" data-movieId="28" name="genre" value="action">
-	    <label for="action">Action</label>
-	    
-	    <input type="radio" id="western"data-movieId="37" name="genre" value="western">
-	    <label for="western">Western</label>
-	    
-	    <input type="radio" id="musical"data-movieId="22" name="genre" value="musical">
-	    <label for="musical">Musical</label>
-	</fieldset>	
+	<div class="wrapper">
+		<form action="" class="search">
+			<label for="search">Enter a Keyword to Search Movies</label>
+			<input type="text" autofocus="autofocus" name="search">
+			<input type="submit" value="Go">
+			<div class="arrow"><img src="i/icon-arrow.svg" alt="Scroll Down"></div>
+		</form>
+		<div class="boxOffice clearfix">
+			
+		</div>
+		<div class="overlay">
+			<div class="overview">
+				<div class="close"><img src="i/icon-close.svg" alt="Close"></div>
+				<p>
+					
+				</p>
+			</div>
+		</div>
+		<fieldset class="rateMovie">
+		    <input type="radio" id="star5" name="rating" value="5">
+		    <label for="star5">5 stars</label>
+		    <input type="radio" id="star4" name="rating" value="4">
+		    <label for="star4">4 stars</label>
+		    <input type="radio" id="star3" name="rating" value="3">
+		    <label for="star3">3 stars</label>
+		    <input type="radio" id="star2" name="rating" value="2">
+		    <label for="star2">2 stars</label>
+		    <input type="radio" id="star1" name="rating" value="1">
+		    <label for="star1">1 star</label>
+		</fieldset>	
 
-	<div class="boxOffice">
-		
 	</div>
-	
-	<fieldset class="rateMovie">
-	    <legend>Please rate:</legend>
-	    <input type="radio" id="star5" name="rating" value="5">
-	    <label for="star5">5 stars</label>
-	    <input type="radio" id="star4" name="rating" value="4">
-	    <label for="star4">4 stars</label>
-	    <input type="radio" id="star3" name="rating" value="3">
-	    <label for="star3">3 stars</label>
-	    <input type="radio" id="star2" name="rating" value="2">
-	    <label for="star2">2 stars</label>
-	    <input type="radio" id="star1" name="rating" value="1">
-	    <label for="star1">1 star</label>
-	</fieldset>	
-
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 	<script src="scripts.js"></script>
 </body>

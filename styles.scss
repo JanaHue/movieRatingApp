@@ -20,13 +20,28 @@ img {
 	max-width:100%;
 }
 
+/*====================================================================================
+                              Base Styles 
+====================================================================================*/ 
+html {
+  font-size: 62.5%;
+}
+body {
+  background: url("i/movieNight.png") top fixed;
+}
+.wrapper {
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 45px;
+}
 
 /*====================================================================================
 		                          Star Rating 
 ====================================================================================*/ 
 .rateMovie {
-    float: left;
     display: none;
+    width: 163px;
+    margin: 0 auto;
 }
 .movie .rateMovie {
 	display: block;
@@ -42,7 +57,7 @@ img {
 .rateMovie:not(:checked) label:before {
     content:'\2605';
     font-size: 30px;
-    color:#d4d4d4;
+    color:black;
 }
 .rateMovie:not(:checked) label:hover:before {
     color: goldenrod;
@@ -54,9 +69,114 @@ img {
     color: goldenrod;
 }
 /*====================================================================================
+                              Search Form
+====================================================================================*/ 
+fieldset {
+  border: none;
+}
+
+form.search {
+  font-family: 'Hammersmith One', sans-serif;
+  width: 460px;
+  height: 307px;
+  margin: 200px auto;
+  padding: 46px;
+  font-size: 24px;
+  text-align: center;
+  background:rgba(251, 250, 236, 0.55);
+  box-shadow: 0 0 2px rgba(255, 255, 255, 0.7);
+  input[type="text"] {
+    outline:none;
+    border: 0;
+    border-bottom: 1px solid black;
+    width: 100%;
+    font-size: 18px;
+    margin: 20px 0 20px 0;
+    padding: 10px 5px 3px 5px;
+    background:rgba(255,255,255,0.1);
+    font-family: 'Ubuntu', sans-serif;
+  }
+  input[type="submit"] {
+    position: relative;
+    font-size: 36px;
+    text-transform: uppercase;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 0;
+    background: rgba(230, 228, 220, 0.9);
+    padding-top: 6px;
+    transition: all 0.4s ease;
+    outline:none;
+    &:hover, &:focus {
+      font-size: 38px;
+      width: 84px;
+      height: 84px;
+    } 
+    &:active {
+      top: 1px;
+    }
+  }
+  .arrow {
+    position: relative;
+    top: 60px;
+    display: none;
+  }
+}
+
+/*====================================================================================
                               boxOffice 
 ====================================================================================*/ 
 
 .boxOffice {
-  padding: 10px;
+  background:rgba(251, 250, 236, 0.85);
+  padding: 0 10%;
 }
+
+.movie {
+  min-width: 189px;
+  width: 20%;
+  float: left;
+  padding: 5px;
+  margin: 40px auto;
+  .movieImg {
+    width: 175px;
+    height: 271px;
+    overflow-y: hidden;
+    margin: 0 auto;
+    &:hover {
+      cursor:pointer;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+.overlay {  
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: rgba(255,255,255,0.85);
+  display: none;
+}
+.overlay .overview{
+  background: rgba(0, 0, 0, 0.9);
+  width: 400px;
+  font-size: 14px;
+  padding: 15px 25px;
+  line-height: 25px;
+  color: rgb(211, 211, 211);
+  position: relative;
+  margin: 20% auto;
+  font-family: 'Ubuntu', sans-serif;
+}
+.close img {
+  position: relative;
+  left: 325px;
+}
+
