@@ -237,6 +237,12 @@ body {
   color: black;
 }
 
+@-moz-document url-prefix() {
+  .rateMovie:not(:checked) label:before {
+    font-size: 50px;
+  }
+}
+
 .rateMovie:not(:checked) label:hover:before {
   color: goldenrod;
 }
