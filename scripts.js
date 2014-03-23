@@ -14,7 +14,6 @@ var movieApp = {
 			console.log("You rated!");
 		});
 		$("body").on("click", ".movieImg", function(){
-			console.log($(this));
 			var movieId = $(this).data("movieid");
 			movieApp.grabDesc(movieId);
 			$(".overlay").fadeIn();
@@ -28,7 +27,6 @@ var movieApp = {
 			e.preventDefault();
 			var query = $('input[name=search]').val();
 			var q = encodeURI(query);
-			console.log(q);
 			movieApp.grabUserSearch(q);
 		});
 	}, // end init function 
@@ -44,7 +42,10 @@ var movieApp = {
 				api_key : movieApp.api_key
 			},
 			success : function(movie) {
-				$(".overlay .overview p").text(movie.overview);
+				if ( movie.overview ){
+					$(".overlay .overview p").text(movie.overview)
+				};
+				$(".overlay .overview h2").text(movie.title);
 			} //end success function
 		}); //end CONFIG ajax request
 	},
@@ -85,7 +86,11 @@ var movieApp = {
 		$(".boxOffice").empty();
 		for (var i = 0; i < movies.length; i++) {
 			var title = $("<h2>").text(movies[i].title);
-			var image = $("<img>").attr("src", movieApp.config.images.base_url + "w500" + movies[i].poster_path);
+			if(movies[i].poster_path){
+				var image = $("<img>").attr("src", movieApp.config.images.base_url + "w500" + movies[i].poster_path)
+			} else{
+				var image = $("<img>").attr("src", "i/ajax-loader.gif")
+			};
 			var rating = $("fieldset.rateMovie")[0].outerHTML;
 			rating = rating.replace(/star/g, "movie" + movies[i].id + "-star");
 			rating = rating.replace(/rating/g, "rating-" + movies[i].id); 

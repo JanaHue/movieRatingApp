@@ -325,6 +325,7 @@ form.search .arrow {
   height: 271px;
   overflow-y: hidden;
   margin: 0 auto;
+  background: white;
 }
 .movie .movieImg:hover {
   cursor: pointer;
@@ -332,6 +333,13 @@ form.search .arrow {
 .movie .movieImg img {
   width: 100%;
   height: auto;
+}
+.movie .movieImg img[src*=ajax-loader] {
+  width: auto;
+  margin: 0 auto;
+  position: relative;
+  top: 40%;
+  left: 40%;
 }
 
 .overlay {
@@ -341,23 +349,58 @@ form.search .arrow {
   right: 0;
   bottom: 0;
   z-index: 9999;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(0, 0, 0, 0.9);
   display: none;
 }
 
 .overlay .overview {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(255, 255, 255, 0.85);
   width: 400px;
   font-size: 14px;
   padding: 15px 25px;
   line-height: 25px;
-  color: lightgrey;
+  color: #1a1515;
   position: relative;
   margin: 20% auto;
   font-family: 'Ubuntu', sans-serif;
+  -webkit-box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  -moz-box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+.overlay .overview p.oops {
+  display: none;
 }
 
-.close img {
+img.close {
   position: relative;
   left: 325px;
+}
+img.close:hover {
+  cursor: pointer;
+}
+
+/*====================================================================================
+                              Media Queries 
+====================================================================================*/
+@media (max-width: 480px) {
+  form.search {
+    width: 300px;
+  }
+
+  .boxOffice div.movie:first-child {
+    padding-top: 40px;
+  }
+  .boxOffice div.movie {
+    float: none;
+    margin: 10px auto;
+  }
+
+  .overlay .overview {
+    width: 290px;
+    height: 350px;
+    overflow: scroll;
+  }
+  .overlay .overview img.close {
+    left: 220px;
+  }
 }
