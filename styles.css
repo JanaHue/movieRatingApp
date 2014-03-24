@@ -200,6 +200,8 @@ html {
 
 body {
   background: url("i/movieNight.png") top fixed;
+  -webkit-background-size: cover;
+  background-size: cover;
 }
 
 .wrapper {
@@ -328,7 +330,7 @@ form.search .arrow {
 }
 .movie .movieImg {
   width: 175px;
-  height: 271px;
+  height: 255px;
   overflow-y: hidden;
   margin: 0 auto;
   background: white;
